@@ -62,6 +62,23 @@
     .project-media img{width:100%;height:100%;object-fit:cover}
     @media(max-width:1023px){.selected-works-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:639px){.selected-works-grid{grid-template-columns:minmax(0,1fr)}}
+    /* AI作品：預覽裁切、燈箱完整呈現，圖片與文字各自佔位。 */
+    .ai-work-preview{position:relative;display:block;width:100%;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--brand-mist);cursor:zoom-in;padding:0}
+    .ai-work-preview img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 30%;transition:transform .4s ease}
+    .about-portrait{aspect-ratio:3/4;max-width:420px;margin-inline:auto;border-radius:26px;box-shadow:0 15px 50px rgba(31,54,84,.06)}
+    .about-portrait img{object-fit:contain;object-position:center}
+    .ai-work-preview:hover img,.ai-work-preview:focus-visible img{transform:scale(1.04)}
+    .ai-work-zoom{position:absolute;right:12px;bottom:12px;display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--brand-blue);color:white;padding:8px 12px;font-size:.75rem;font-weight:700;box-shadow:0 4px 16px rgba(31,54,84,.18)}
+    .work-lightbox{position:fixed;inset:0;margin:auto;width:min(94vw,1100px);max-width:94vw;max-height:94dvh;padding:52px 12px 12px;border:0;border-radius:20px;background:var(--brand-white);color:var(--brand-navy);box-shadow:0 24px 80px rgba(31,54,84,.3);overflow:auto}
+    .work-lightbox::backdrop{background:rgba(15,28,47,.85);backdrop-filter:blur(5px)}
+    .work-lightbox figure{margin:0;text-align:center}
+    .work-lightbox img{display:block;width:100%;height:auto;max-height:calc(94dvh - 115px);object-fit:contain;margin:auto}
+    .work-lightbox figcaption{font-size:.875rem;font-weight:700;margin-top:12px}
+    .work-lightbox-close{position:absolute;top:8px;right:12px;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--brand-mist);color:var(--brand-blue);cursor:pointer;transition:background .2s,color .2s}
+    .work-lightbox-close:hover{background:var(--brand-red);color:white}
+    .portfolio-preview{position:relative;display:block;width:100%;aspect-ratio:8/5;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--brand-mist);padding:0;cursor:zoom-in}
+    .portfolio-preview img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .portfolio-preview:hover img,.portfolio-preview:focus-visible img{transform:scale(1.04)}
     #mobile-menu[hidden]{display:none!important}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.fade-up{opacity:1;transform:none}.typing-caret{display:none}}
     @media(max-width:767px){.hero{min-height:auto;padding-top:130px;padding-bottom:76px}.hero-panel{margin-top:16px}.orb-a{width:240px;height:240px}.orb-b{width:200px;height:200px}.section-title{font-size:2.1rem}}
@@ -118,11 +135,16 @@
       </div>
     </section>
 
-    <!-- ABOUT：中性視覺預留區與專業介紹 -->
+    <!-- ABOUT：AI人物插畫與專業介紹 -->
     <section id="about" class="py-24 lg:py-32 bg-white" aria-labelledby="about-title">
       <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
         <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-10 lg:gap-16 items-center">
-          <div class="fade-up"><div class="placeholder-portrait" role="img" aria-label="中性品牌視覺預留位置"><i class="fa-regular fa-image" aria-hidden="true"></i><p class="font-extrabold text-slate-700">品牌視覺預留區</p><p class="text-sm leading-relaxed">日後可替換為中性插畫或抽象視覺<br>以創意呈現數位行銷理念</p></div></div>
+          <div class="fade-up">
+          <button type="button" class="ai-work-preview about-portrait" id="ai-work-open" aria-label="放大觀看 Zorya 品牌插畫" aria-haspopup="dialog" aria-controls="ai-work-lightbox">
+            <img src="images/ai-creative-work.jpg" width="1086" height="1448" alt="手繪風格人物插畫：戴圓框眼鏡、穿藍白條紋上衣的人物手持手機" loading="lazy" decoding="async">
+            <span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span>
+          </button>
+          </div>
           <div class="fade-up"><p class="eyebrow mb-3">About Me</p><h2 class="section-title" id="about-title">關於我<span class="gradient-text">・以內容連結品牌，以數據理解需求</span></h2>
             <p class="mt-6 text-slate-600 leading-[2]">我是<span class="font-extrabold text-slate-800">Zorya</span>，具備數位行銷實務經驗，專注於品牌內容、社群經營、SEO搜尋引擎優化、數位廣告投放及行銷數據分析。</p>
             <p class="mt-4 text-slate-600 leading-[2]">熟悉Google Ads、Meta Ads、Google Analytics 4、Google Search Console等工具，透過內容企劃、數據觀察與跨平台整合，探索更有效率的行銷方式。</p>
@@ -146,16 +168,16 @@
       </div>
     </div></section>
 
-    <!-- PORTFOLIO：6個作品分類，暫用插畫式佔位視覺 -->
+    <!-- PORTFOLIO：6個作品分類，使用專案內圖片與共用燈箱 -->
     <section id="portfolio" class="py-24 lg:py-32 bg-white" aria-labelledby="portfolio-title"><div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
       <div class="fade-up mb-12"><p class="eyebrow mb-3">Portfolio</p><h2 id="portfolio-title" class="section-title">作品集<span class="gradient-text">・實務經驗的累積</span></h2><p class="section-description">將行銷工作拆解為不同能力面向，呈現品牌、廣告、SEO、數據、內容與AI工具的實務應用。作品內容將陸續整理更新。</p></div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-layer-group" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">01 / BRAND</p><h3 class="font-black text-lg">品牌與社群行銷</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">品牌內容規劃、社群文案與多平台經營。</p></div></article>
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-rectangle-ad" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">02 / ADS</p><h3 class="font-black text-lg">數位廣告投放</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">廣告企劃、素材設定、預算控管與成效觀察。</p></div></article>
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">03 / SEARCH</p><h3 class="font-black text-lg">SEO與網站內容優化</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">網站文章、搜尋流量追蹤與內容調整。</p></div></article>
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-chart-column" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">04 / ANALYTICS</p><h3 class="font-black text-lg">行銷數據分析</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">分析報表、流量洞察與成效回顧。</p></div></article>
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-film" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">05 / CREATIVE</p><h3 class="font-black text-lg">短影音與視覺內容製作</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">腳本發想、活動紀錄、影片剪輯與視覺設計。</p></div></article>
-        <article class="surface lift fade-up p-4"><div class="visual-tile"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i><span class="visual-label">作品圖片預留</span></div><div class="p-3 pt-5"><p class="eyebrow mb-2">06 / AI</p><h3 class="font-black text-lg">AI工具與行銷應用</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">AI輔助內容發想、工作流程及資訊整理。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：品牌與社群行銷" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/01-brand.png" width="434" height="266" alt="品牌與社群行銷分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">01 / BRAND</p><h3 class="font-black text-lg">品牌與社群行銷</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">品牌內容規劃、社群文案與多平台經營。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：數位廣告投放" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/02-ads.png" width="426" height="266" alt="數位廣告投放分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">02 / ADS</p><h3 class="font-black text-lg">數位廣告投放</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">廣告企劃、素材設定、預算控管與成效觀察。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：SEO與網站內容優化" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/03-seo.png" width="437" height="266" alt="SEO與網站內容優化分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">03 / SEARCH</p><h3 class="font-black text-lg">SEO與網站內容優化</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">網站文章、搜尋流量追蹤與內容調整。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：行銷數據分析" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/04-analytics.png" width="434" height="271" alt="行銷數據分析分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">04 / ANALYTICS</p><h3 class="font-black text-lg">行銷數據分析</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">分析報表、流量洞察與成效回顧。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：短影音與視覺內容製作" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/05-creative.png" width="426" height="271" alt="短影音與視覺內容製作分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">05 / CREATIVE</p><h3 class="font-black text-lg">短影音與視覺內容製作</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">腳本發想、活動紀錄、影片剪輯與視覺設計。</p></div></article>
+        <article class="surface lift fade-up p-4"><button type="button" class="portfolio-preview" aria-label="放大觀看：AI工具與行銷應用" aria-haspopup="dialog" aria-controls="ai-work-lightbox"><img src="images/06-ai.png" width="437" height="271" alt="AI工具與行銷應用分類展示圖" loading="lazy" decoding="async"><span class="ai-work-zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i> 放大觀看</span></button><div class="p-3 pt-5"><p class="eyebrow mb-2">06 / AI</p><h3 class="font-black text-lg">AI工具與行銷應用</h3><p class="text-sm text-slate-500 mt-2 leading-relaxed">AI輔助內容發想、工作流程及資訊整理。</p></div></article>
       </div>
 
     </div></section>
@@ -214,6 +236,16 @@
 
 
   </main>
+
+  <!-- 原生 dialog 提供鍵盤焦點限制及 Esc 關閉功能。 -->
+  <dialog id="ai-work-lightbox" class="work-lightbox" aria-labelledby="ai-work-caption">
+    <button type="button" class="work-lightbox-close" id="ai-work-close" aria-label="關閉圖片" autofocus><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <figure>
+      <img id="ai-work-full" width="1086" height="1448" alt="完整 Zorya 品牌插畫：戴圓框眼鏡、穿藍白條紋上衣的人物手持手機" decoding="async">
+      <figcaption id="ai-work-caption">Zorya 品牌插畫</figcaption>
+    </figure>
+  </dialog>
+
   <footer class="bg-white border-t border-slate-200"><div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-8 flex flex-col sm:flex-row justify-between gap-3 text-sm text-slate-500"><p>© <span id="current-year">2026</span> Zorya｜數位行銷作品集</p><p>Creativity × Data × Digital Marketing</p></div></footer>
 
   <script>
@@ -274,8 +306,47 @@
     }
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
+    // 圖片共用燈箱：完整圖片延後至點擊時載入，關閉時還原捲動與焦點。
+    const workLightbox = document.getElementById('ai-work-lightbox');
+    const workOpen = document.getElementById('ai-work-open');
+    const workClose = document.getElementById('ai-work-close');
+    const workFullImage = document.getElementById('ai-work-full');
+    let previousOverflow = '';
+    let activeWorkTrigger = workOpen;
+    const workCaption = document.getElementById('ai-work-caption');
+    document.querySelectorAll('#ai-work-open, .portfolio-preview').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        if (workLightbox.open) return;
+        const image = trigger.querySelector('img');
+        activeWorkTrigger = trigger;
+        workFullImage.src = image.getAttribute('src');
+        workFullImage.alt = image.alt;
+        workFullImage.width = image.width;
+        workFullImage.height = image.height;
+        workCaption.textContent = trigger === workOpen ? 'Zorya 品牌插畫' : trigger.closest('article').querySelector('h3').textContent;
+        previousOverflow = document.body.style.overflow;
+        workLightbox.showModal();
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    workClose.addEventListener('click', () => workLightbox.close());
+    let workBackdropPressed = false;
+    function isWorkBackdrop(event) {
+      const box = workLightbox.getBoundingClientRect();
+      return event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom;
+    }
+    workLightbox.addEventListener('pointerdown', event => { workBackdropPressed = isWorkBackdrop(event); });
+    workLightbox.addEventListener('click', event => {
+      if (workBackdropPressed && isWorkBackdrop(event)) workLightbox.close();
+      workBackdropPressed = false;
+    });
+    workLightbox.addEventListener('close', () => {
+      document.body.style.overflow = previousOverflow;
+      activeWorkTrigger.focus({preventScroll:true});
+    });
+
     /* 匿名草稿維護指引：
-      A. 中性視覺：.placeholder-portrait 可替換為不含個人身分資訊的插畫或抽象圖片。
+      A. 關於我圖片：.about-portrait 使用 images/ai-creative-work.jpg，點擊可完整放大。
       B. 作品圖片：.visual-tile 與 .project-media 可替換為已去識別的授權圖片並提供 alt。
       C. 作品與聯絡功能：取得適合公開的資料後，再將停用狀態替換為有效連結。
       D. 品牌色票：集中於 brandColors、對應色階與 :root 變數。
